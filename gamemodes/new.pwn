@@ -196,3 +196,78 @@ public OnPlayerSpawn(playerid)
     }
     return 1;
 }
+
+public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
+{
+    // Cek udah login atau blm
+    if (!PlayerLogged[playerid])
+    {
+        SendClientMessage(playerid, -1, "{FF0000}Kamu harus login terlebih dahulu");
+        return 1;
+    }
+    
+    // Pindahkan player ke lokasi yang diklik
+    SetPlayerPos(playerid, fX, fY, fZ + 1.0);
+    SendClientMessage(playerid, 0x00FF00FF, "Anda berhasil teleport ke lokasi.");    
+    return 1;
+}
+
+// ===============
+//     COMMAND
+// ===============
+
+// Untuk set Posisi
+CMD:pos(playerid, params[])
+{
+    // Cek jika pemain belum login
+    if(!PlayerLogged[playerid]) 
+    {
+        SendClientMessage(playerid, -1, "{FF0000}Kamu harus login terlebih dahulu.");
+        return 1;
+    }
+    
+    new Float:x, Float:y, Float:z, Float:a;
+    new msg[128];
+    
+    GetPlayerPos(playerid, x, y, z);
+    GetPlayerFacingAngle(playerid, a);
+    
+    format(msg, sizeof(msg), "Koordinat: X: %.4f, Y: %.4f, Z: %.4f, Angle: %.1f", x, y, z, a);
+    
+    SendClientMessage(playerid, -1, msg);
+    printf("%s", msg);
+    
+    return 1;
+}
+
+public OnPlayerDisconnect(playerid, reason)
+{
+    if (BrandingTD[playerid] != Text:0)
+    {
+        TextDrawHideForPlayer(playerid, BrandingTD[playerid]);
+        TextDrawDestroy(BrandingTD[playerid]);
+        BrandingTD[playerid] = Text:0;
+    }
+    
+    // Simpan data jika pemain berhasil login
+    if(PlayerLogged[playerid])
+    {
+        new accpath[64];
+        AccountPath(playerid, accpath, sizeof(accpath));
+    
+        // Dapatkan data posisi dan saat player keluar
+        new Float:x, Float:y, Float:z, Float:a;
+        GetPlayerPos(playerid, x, y, z);
+        GetPlayerFacingAngle(playerid, a);
+   
+        // Simpan data ke file .ini pemain
+        dini_FloatSet(accpath, "PosX", x);
+        dini_FloatSet(accpath, "PosY", y);
+        dini_FloatSet(accpath, "PosZ", z);
+        dini_FloatSet(accpath, "PosAngle", a);
+
+        PlayerLogged[playerid] = false;
+        return 1;
+    }
+}
+
