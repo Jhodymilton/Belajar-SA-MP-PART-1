@@ -1,4 +1,4 @@
-#include <a_samp>
+ini#include <a_samp>
 #include <sscanf2>
 #include <dini>
 #include <zcmd>
@@ -73,4 +73,63 @@ public OnPlayerConnect(playerid)
         ShowPlayerDialog(playerid, DIALOG_LOGIN, DIALOG_STYLE_INPUT, title, body, b1, b2);
     }
     return 1;
+}
+
+public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
+{
+    // Fungsi response Dialog Register
+    if(dialogid == DIALOG_REGISTER)
+    {
+        if(!response || strlen(inputtext) == 0)
+        {
+            SendClientMessage(playerid, -1, "Registrasi dibatalkan atau password tidak valid.");
+            return Kick(playerid);
+        }
+        
+        new accpath[64];
+        AccountPath(playerid, accpath, sizeof(accpath));
+        dini_Create(accpath);
+        dini_Set(accpath, "Password", inputtext);
+        
+        IsNewPlayer[playerid] = true;
+        PlayerLogged[playerid] = true;
+        
+        // Lepaskan mode spectate setelah berhasil mendaftar
+        TogglePlayerSpectating(playerid, 0);
+        SpawnPlayer(playerid);
+        
+        SendClientMessage(playerid, -1, "Registrasi berhasil! Selamat datang di Belajar Roleplay");
+        
+        return 1;
+   }
+   
+   if(dialogid == DIALOG_LOGIN)
+   {
+       if(!response) return Kick(playerid);
+       
+       new accpath[64];
+       AccountPath(playerid, accpath, sizeof(accpath));
+       
+       if(strcmp(dini_Get(accpath, "Password"), inputtext, true) == 0)
+       {
+           PlayerLogged[playerid] = true;
+           IsReturningPlayer[playerid] = true;
+           
+           // Lepaskan mode spectate setelah berhasil login
+           TogglePlayerSpectating(playerid, 0);
+           SpawnPlayer(playerid);
+           
+           SendClientMessage(playerid, -1, "Kamu berhasil kembali ke Belajar Roleplay");
+       }
+       else
+       {
+           PlayerLogged[playerid] = false;
+           
+           SendClientMessage(playerid, -1, "Password yang anda masukan salah, silahkan masuk kembali dan coba lagi");
+           Kick(playerid);
+       }
+       return 1;
+   
+   }
+   return 0;
 }
