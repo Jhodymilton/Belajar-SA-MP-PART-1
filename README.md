@@ -1,0 +1,1 @@
+# Gamemode-SAMP-V1.0
