@@ -27,6 +27,40 @@ stock AccountPath(playerid, dest[], size = 64)
     return 1;
 }
 
+stock SaveInitialData(playerid)
+{
+    new accpath[64];
+    AccountPath(playerid, accpath, sizeof(accpath));
+    
+    new Float:x, Float:y, Float:z, Float:a;
+    GetPlayerPos(playerid, x, y, z);
+    GetPlayerFacingAngle(playerid, a);
+
+    dini_FloatSet(accpath, "PosX", x);
+    dini_FloatSet(accpath, "PosY", y);
+    dini_FloatSet(accpath, "PosZ", z);
+    dini_FloatSet(accpath, "PosAngle", a);
+    return 1;
+}
+
+stock LoadPlayerData(playerid)
+{
+    new accpath[64];
+    AccountPath(playerid, accpath, sizeof(accpath));
+    
+    new Float:x = dini_Float(accpath, "PosX");
+    new Float:y = dini_Float(accpath, "PosY");
+    new Float:z = dini_Float(accpath, "PosZ");
+    new Float:a = dini_Float(accpath, "PosAngle");
+    
+    SetPlayerPos(playerid, x, y, z);
+    SetPlayerFacingAngle(playerid, a);
+    
+    SendClientMessage(playerid, -1, "Login berhasil. Selamat datang kembali!");
+    return 1;
+}
+
+
 main()
 {
 	print("\n----------------------------------");
@@ -132,4 +166,33 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
    
    }
    return 0;
+}
+
+public OnPlayerSpawn(playerid)
+{
+    // Logika untuk pendaftar baru
+    if (IsNewPlayer[playerid])
+    {
+        SaveInitialData(playerid);
+        IsNewPlayer[playerid] = false;
+    }
+    else if(IsReturningPlayer[playerid])
+    {
+        LoadPlayerData(playerid);
+        IsReturningPlayer[playerid] = false;
+    }
+    
+    // Tampilkan branding nama server
+    if (BrandingTD[playerid] == Text:0)
+    {
+        BrandingTD[playerid] = TextDrawCreate(320.0, 20.0, "Belajar Roleplay");
+        TextDrawAlignment(BrandingTD[playerid], 2);
+        TextDrawBackgroundColor(BrandingTD[playerid], 255);
+        TextDrawFont(BrandingTD[playerid], 3);
+        TextDrawLetterSize(BrandingTD[playerid], 0.3, 1.0);
+        TextDrawColor(BrandingTD[playerid], 0x00C0FFFF);
+        TextDrawSetOutline(BrandingTD[playerid], 1);
+        TextDrawShowForPlayer(playerid, BrandingTD[playerid]);
+    }
+    return 1;
 }
