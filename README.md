@@ -3,6 +3,7 @@
 [![Lisensi](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Versi](https://img.shields.io/badge/Version-V1.0-informational)]()
 [![Platform](https://img.shields.io/badge/Platform-SA:MP%200.3.7-red)](https://www.sa-mp.com/)
+[![Tutorial](https://img.shields.io/badge/Tutorial-YouTube-red)](https://youtube.com/@jodymilton05?si=-dZ_DPW0H4nDMlx5) ⬅️ 
 [![Bahasa](https://img.shields.io/badge/Language-PAWN-green)]()
 
 ## ✍️ Oleh: Jody Milton
@@ -105,4 +106,4 @@ File Samp Server Versi Linux-nya tinggal Anda *upload* (taruh) di web server hos
 
 ## 📜 Lisensi
 
-Proyek ini bertujuan untuk edukasi dan dikembangkan di bawah Lisensi **[Tentukan Lisensi, cth: MIT]**.
+Proyek ini bertujuan untuk edukasi dan dikembangkan di bawah Lisensi **Lisensi MIT**. Lihat berkas `LICENSE` untuk detail.
