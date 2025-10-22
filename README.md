@@ -1,4 +1,4 @@
-# 🚀 Belajar Roleplay - SA:MP Gamemode Dasar
+# 🚀 Belajar SA-MP Part 1- Gamemode Dasar
 
 [![Lisensi](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Versi](https://img.shields.io/badge/Version-V1.0-informational)]()
